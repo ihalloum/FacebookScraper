@@ -15,8 +15,8 @@ This script test under this Requirements
   2- Create Database fb_data
 		$ mysql -u root -p
 		mysql> CREATE DATABASE fb_data;
-  3- Import Database structure .[ Use /database/fb_dta.sql ].
+  2- Import Database structure .[ Use /database/fb_dta.sql ].
 		$mysql -u root -p fb_data < /database/fb_data.sql
-  4- Edit Script vars to fit your data.
-  5- Run Script :)
+  3- Edit Script vars to fit your data.
+  4- Run Script :)
 		$python -W ignore script.py
