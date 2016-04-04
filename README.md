@@ -11,7 +11,7 @@ This script test under this Requirements
 
 # Setup Script
   * Download Script .
->			$ git clone https://github.com/atbero/FacebookScraper.git
+			$ git clone https://github.com/atbero/FacebookScraper.git
   * Create Database fb_data
 			$ mysql -u root -p
 			mysql> CREATE DATABASE fb_data;
