@@ -1,19 +1,24 @@
 # -*- coding: utf-8 -*-
 
+# ------------------------------------------------------------------------------
+# ------ This script code by Ibraheem (@ihalloum) and Sumaia (@sumaia-a-k)------ 
+# ------ For educational purposes only .                                  ------
+# ------------------------------------------------------------------------------
+
 import urllib2
 import json
 import _mysql
 import MySQLdb as mdb
 
 # ------------------------------------------------------------------------------
-#--------------------- Edit var below to fit your systeam ----------------------
+# --------------------- Edit var below to fit your systeam ---------------------
 # ------------------------------------------------------------------------------
 
 # Graph URL check version
 graph_url = "https://graph.facebook.com/v2.5/"
 # Add the Pages ID
 #list_pages = ["345180182174204","63811549237"]
-list_pages = ["345180182174204"]
+list_pages = [""]
 #Access Token = App ID + App Secret
 accesstoken=""+"|"+""
 #Posts Details want to collect
@@ -46,7 +51,7 @@ posts_parametrs = "/posts/?fields="+posts_fields+"&access_token="+accesstoken
 comments_parametrs = "?fields="+comments_fields+"&access_token="+accesstoken
 
 
-
+# Execute Mysql Query ( select , update , insert , delete ----) , we use this function to update next record
 def excuteQuery(query):
         try:
                 with con:
@@ -59,7 +64,7 @@ def excuteQuery(query):
                 print str(ex)
 		return None
 
-
+# For insert new row , we use this function to insert posts and comments
 def insert_row(query , data):
         try:
                 with con:
@@ -70,6 +75,7 @@ def insert_row(query , data):
                 print str(ex);
 		return -1
 
+# This function update next record in status tables which contains page id and last post page scanned for this page
 def update_page_status(page_id,status):
 	try:
 		statement="INSERT INTO status (pageid,next) VALUES ('"+page_id+"', '"+status+"') ON DUPLICATE KEY UPDATE  next ='"+status+"'"
@@ -77,7 +83,8 @@ def update_page_status(page_id,status):
 	except Exception as ex:
 		print str(ex);
                 pass
-	
+
+# This function store  comments for  selected posts (post_id) in the comments table	
 def get_fb_Post_comment ( post_id , page_id ):
 	
 	current_page = graph_url + post_id + "/comments/" + comments_parametrs + "&limit=" + str(fb_comment_max)
@@ -106,7 +113,7 @@ def get_fb_Post_comment ( post_id , page_id ):
 			print str(ex)
 			pass
 
-
+# This function store posts which exist in data_url and update last page scanned by update next record in status table
 def get_fb_pages_posts( data_url ,page_id):
 
 	current_page = data_url
@@ -147,6 +154,7 @@ def get_fb_pages_posts( data_url ,page_id):
 	except Exception as ex:
 		return None
 
+# This function store posts for selected page by execute get_fb_pages_posts() more than one until reach to fb_post_max
 def scan_fb_pages(page_id):
 	
 	try:
