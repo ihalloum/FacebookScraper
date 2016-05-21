@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # ------------------------------------------------------------------------------
-# ------ This script code by Ibraheem (@ihalloum) and Sumaia (@sumaia-a-k)------ 
+# ------ This script code by Sumaia (@sumaia-a-k) and Ibraheem (@ihalloum)------ 
 # ------ For educational purposes only .                                  ------
 # ------------------------------------------------------------------------------
 
