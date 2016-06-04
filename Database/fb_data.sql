@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 04, 2016 at 06:14 AM
+-- Generation Time: Jun 04, 2016 at 01:14 AM
 -- Server version: 5.5.47-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -29,15 +29,16 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `pageid` varchar(50) NOT NULL,
-  `postid` varchar(50) NOT NULL,
-  `commentid` varchar(50) NOT NULL,
+  `pageid` varchar(200) NOT NULL,
+  `postid` varchar(200) NOT NULL,
+  `commentid` varchar(200) NOT NULL,
   `message` varchar(10000) NOT NULL,
-  `fromid` varchar(50) NOT NULL,
-  `fromname` varchar(50) NOT NULL,
+  `fromid` varchar(100) NOT NULL,
+  `fromname` varchar(100) NOT NULL,
   `createdtime` varchar(50) NOT NULL,
+  `total_likes` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21472 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -48,14 +49,36 @@ CREATE TABLE IF NOT EXISTS `comments` (
 CREATE TABLE IF NOT EXISTS `Posts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `pageid` varchar(50) NOT NULL,
-  `postid` varchar(50) NOT NULL,
+  `pageid` varchar(200) NOT NULL,
+  `postid` varchar(200) NOT NULL,
   `message` varchar(10000) NOT NULL,
-  `fromid` varchar(50) NOT NULL,
-  `fromname` varchar(50) NOT NULL,
+  `fromid` varchar(100) NOT NULL,
+  `fromname` varchar(100) NOT NULL,
   `createdtime` varchar(50) NOT NULL,
+  `total_likes` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=72 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `replys`
+--
+
+CREATE TABLE IF NOT EXISTS `replys` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `pageid` varchar(200) NOT NULL,
+  `postid` varchar(200) NOT NULL,
+  `commentid` varchar(200) NOT NULL,
+  `replyid` varchar(200) NOT NULL,
+  `message` varchar(10000) NOT NULL,
+  `fromid` varchar(100) NOT NULL,
+  `fromname` varchar(100) NOT NULL,
+  `createdtime` varchar(50) NOT NULL,
+  `total_likes` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -70,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `status` (
   `next` varchar(1000) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `pageid` (`pageid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

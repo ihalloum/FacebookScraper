@@ -26,7 +26,10 @@ def main():
 		if ( scrape_pages.startswith("ScrapePage=") and scrape_groups.startswith("ScrapeGroup=") and scrape_comments.startswith("ScrapeComment=") and scrape_replys.startswith("ScrapeReply=")  ) :
 			
 			if ( (scrape_pages.endswith("=Y") or scrape_pages.endswith("=N") ) and (scrape_groups.endswith("=Y") or scrape_groups.endswith("=N") ) and (scrape_comments.endswith("=Y") or scrape_comments.endswith("=N") ) and (scrape_replys.endswith("=Y") or scrape_replys.endswith("=N") ) ) :
-				
+				global scrape_page
+				global scrape_group
+				global scrape_comment
+				global scrape_reply
 				if (scrape_pages.endswith("=Y")) :
 					scrape_page = 1
 				else :
@@ -48,9 +51,9 @@ def main():
 					scrape_reply = 0
 				
 				if (scrape_page):
-					scan_fb_pages(scrape_comment,scrape_reply)
+					scan_fb_pages()
 				if (scrape_group):					
-					scan_fb_groups(scrape_comment,scrape_reply)
+					scan_fb_groups()
 				
 			else :
 				print "Bad Script Excute , make sure you write Value right"
