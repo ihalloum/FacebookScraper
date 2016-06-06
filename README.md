@@ -16,7 +16,7 @@ This script test under this Requirements
 			`$ mysql -u root -p`
 			`mysql> CREATE DATABASE fb_data;`
   * Import Database structure .[ Use /database/fb_dta.sql ].
-			`$mysql -u root -p fb_data < /database/fb_data.sql`
+			`$mysql -u root -p fb_data < ./Database/fb_data.sql`
   * Edit Script vars to fit your data.
   * Run Script :)
 			`$python -W ignore script.py ScrapePage=Y ScrapeGroup=Y ScrapeComment=Y ScrapeReply=Y ScrapeLike=Y`
