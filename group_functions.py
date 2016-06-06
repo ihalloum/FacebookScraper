@@ -160,7 +160,7 @@ def get_fb_group_feeds( data_url ,group_id):
 				get_fb_Feed_comment(feed_id,group_id)
 			
 			if fb_feed_counter%10==0:
-				print "\t"+str(fb_feed_counter) +" feeds and "+ str(fb_comment_counter)+ " comments and "+str(fb_reply_counter)+" Reply and "+str(fb_like_counter)+" likes is scanned for group "+group_id
+				print "\t"+str(fb_feed_counter) +" feeds and "+ str(fb_comment_counter)+ " comments and "+str(fb_reply_counter)+" reply and "+str(fb_like_counter)+" likes is scanned for group "+group_id
 		
 		except Exception as ex:
 			#print str(ex)
