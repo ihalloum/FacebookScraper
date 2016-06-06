@@ -11,9 +11,11 @@ from mysql_functions import *
 fb_feed_counter = 0
 fb_comment_counter = 0
 fb_reply_counter = 0
+fb_like_counter = 0
 fb_total_feed_counter = 0
 fb_total_comment_counter = 0
 fb_total_reply_counter = 0
+fb_total_like_counter = 0
 feeds_parametrs = "/feed/?fields="+feeds_fields+"&access_token="+accesstoken
 comments_parametrs = "?fields="+comments_fields+"&access_token="+accesstoken
 
@@ -26,6 +28,39 @@ def update_group_status(group_id,status):
 		print str(ex);
                 pass
 
+# This function store  likes for  selected feeds,comments,replys  in the likes table	
+def get_fb_like ( group_id,feed_id ,comment_id,reply_id,want_str):
+	if (want_str=="feed"):
+		want_id=feed_id
+	elif (want_str=="comment"):
+		want_id=comment_id
+	elif (want_str == "reply"):
+		want_id=reply_id
+	else :
+		print "LIKES FUNCTION want_str Error Value"
+		return
+		
+	current_page = graph_url + want_id + "/likes"  + "?limit=" + str(fb_like_max) +"&access_token="+accesstoken
+	web_response = urllib2.urlopen(current_page)
+	readable_page = web_response.read()
+	json_fbpage = json.loads(readable_page)
+	for data in json_fbpage["data"]:
+		try :
+			
+			from_id = data["id"]
+			from_name = data["name"]
+			add_query=("INSERT INTO likes "
+               			"(pageid, postid,commentid,replyid,fromname,fromid) "
+               			"VALUES (%s,%s,%s,%s,%s,%s)")
+			add_data = (group_id,feed_id,comment_id,reply_id,from_name,from_id)
+			insert_row(add_query,add_data)
+			global fb_like_counter
+			fb_like_counter+=1
+			
+		except Exception as ex:
+			print str(ex)
+			pass
+
 # This function store  replys for  selected comments (comment_id) in the replys table	
 def get_fb_Feed_reply ( feed_id , group_id ,comment_id):
 	
@@ -33,7 +68,6 @@ def get_fb_Feed_reply ( feed_id , group_id ,comment_id):
 	web_response = urllib2.urlopen(current_page)
 	readable_page = web_response.read()
 	json_fbpage = json.loads(readable_page)
-	reply_num = 0
 	for data in json_fbpage["data"]:
 		try :
 			message = data["message"].encode('utf8')
@@ -52,7 +86,8 @@ def get_fb_Feed_reply ( feed_id , group_id ,comment_id):
 			insert_row(add_query,add_data)
 			global fb_reply_counter
 			fb_reply_counter+=1
-			reply_num +=1
+			if(scrape_like):
+				get_fb_like(group_id,feed_id ,comment_id,reply_id,"reply")
 
 		except Exception as ex:
 			print str(ex)
@@ -65,7 +100,6 @@ def get_fb_Feed_comment ( feed_id , group_id ):
 	web_response = urllib2.urlopen(current_page)
 	readable_page = web_response.read()
 	json_fbpage = json.loads(readable_page)
-	comment_num = 0
 	for data in json_fbpage["data"]:
 		try :
 			message = data["message"].encode('utf8')
@@ -84,7 +118,8 @@ def get_fb_Feed_comment ( feed_id , group_id ):
 			insert_row(add_query,add_data)
 			global fb_comment_counter
 			fb_comment_counter+=1
-			comment_num +=1
+			if(scrape_like):
+				get_fb_like(group_id,feed_id ,comment_id,"NULL","comment")
 			if(scrape_reply):
 				get_fb_Feed_reply(feed_id,group_id,comment_id)
 
@@ -119,11 +154,13 @@ def get_fb_group_feeds( data_url ,group_id):
 			insert_row(add_query,add_data)
 			global fb_feed_counter
 			fb_feed_counter+=1
+			if(scrape_like):
+				get_fb_like(group_id,feed_id ,"NULL","NULL","feed")
 			if(scrape_comment):
 				get_fb_Feed_comment(feed_id,group_id)
 			
 			if fb_feed_counter%10==0:
-				print "\t"+str(fb_feed_counter) +" feeds and "+ str(fb_comment_counter)+ " comments and "+str(fb_reply_counter)+" Reply is scanned for group "+group_id
+				print "\t"+str(fb_feed_counter) +" feeds and "+ str(fb_comment_counter)+ " comments and "+str(fb_reply_counter)+" Reply and "+str(fb_like_counter)+" likes is scanned for group "+group_id
 		
 		except Exception as ex:
 			#print str(ex)
@@ -153,39 +190,47 @@ def scan_fb_group(group_id):
 			if current_page != "None":
 				current_page=get_fb_group_feeds(current_page,group_id)
 			else :
-				print "\tThe Script Scan all the Feeds in this page"+ group_id	
+				print "\tThe Script Scan all the Feeds in this group"+ group_id	
 	except Exception as ex:
 		print str(ex)
 		pass
 
 
-def scan_fb_groups(scrape_comments,scrape_replys):
+def scan_fb_groups(scrape_comments,scrape_replys,scrape_likes):
 	global scrape_comment
 	global scrape_reply
+	global scrape_like
 	scrape_comment=scrape_comments
 	scrape_reply=scrape_replys
+	scrape_like=scrape_likes
 	for group_id in list_groups :
 		global fb_comment_counter
 		global fb_feed_counter
 		global fb_reply_counter
+		global fb_like_counter
 		fb_comment_counter=0
 		fb_feed_counter=0
 		fb_reply_counter=0
-		print "###############################################################################"
+		fb_like_counter=0
+		print "########################################################################################################"
 		print "Scan Started For Group "+group_id
 		scan_fb_group(group_id)
 		print "Scan Finished For Group "+group_id
 		print "Total feeds = " + str(fb_feed_counter)
 		print "Total comments = " + str(fb_comment_counter)
 		print "Total replys = " + str(fb_reply_counter)
+		print "Total likes = " + str(fb_like_counter)
 		global fb_total_comment_counter
 		global fb_total_feed_counter
 		global fb_total_reply_counter
+		global fb_total_like_counter
 		fb_total_comment_counter+=fb_comment_counter
 		fb_total_feed_counter+=fb_feed_counter
 		fb_total_reply_counter+=fb_reply_counter
-	print "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-	print "Script Finished"
-	print "Total Scaned Feeds = " + str(fb_total_feed_counter)
-	print "Total Scaned Comments = " + str(fb_total_comment_counter)
-	print "Total Scaned Replys = " + str(fb_total_reply_counter)
+		fb_total_like_counter+=fb_like_counter
+	print "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+	print "Groups Script Finished"
+	print "Total Scaned Groups Feeds = " + str(fb_total_feed_counter)
+	print "Total Scaned Groups Comments = " + str(fb_total_comment_counter)
+	print "Total Scaned Groups Replys = " + str(fb_total_reply_counter)
+	print "Total Scaned Groups Likes = " + str(fb_total_like_counter)

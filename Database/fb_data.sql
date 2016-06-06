@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 04, 2016 at 01:14 AM
+-- Generation Time: Jun 06, 2016 at 05:36 AM
 -- Server version: 5.5.47-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -37,6 +37,24 @@ CREATE TABLE IF NOT EXISTS `comments` (
   `fromname` varchar(100) NOT NULL,
   `createdtime` varchar(50) NOT NULL,
   `total_likes` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `likes`
+--
+
+CREATE TABLE IF NOT EXISTS `likes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `pageid` varchar(200) NOT NULL,
+  `postid` varchar(200) NOT NULL,
+  `commentid` varchar(200) DEFAULT NULL,
+  `replyid` varchar(200) DEFAULT NULL,
+  `fromname` varchar(200) NOT NULL,
+  `fromid` varchar(200) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
