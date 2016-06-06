@@ -235,7 +235,7 @@ def scan_fb_pages(scrape_comments,scrape_replys,scrape_likes):
 		fb_total_like_counter+=fb_like_counter
 	print "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
 	print "Pages Script Finished"
-	print "Total Scaned Psges Posts = " + str(fb_total_post_counter)
-	print "Total Scaned Psges Comments = " + str(fb_total_comment_counter)
-	print "Total Scaned Psges Replys = " + str(fb_total_reply_counter)
-	print "Total Scaned Psges likes = " + str(fb_total_like_counter)
+	print "Total Scaned Pages Posts = " + str(fb_total_post_counter)
+	print "Total Scaned Pages Comments = " + str(fb_total_comment_counter)
+	print "Total Scaned Pages Replys = " + str(fb_total_reply_counter)
+	print "Total Scaned Pages likes = " + str(fb_total_like_counter)
